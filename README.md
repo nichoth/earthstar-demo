@@ -1,5 +1,4 @@
 # earthstar demo
-
 Doing this: https://github.com/earthstar-project/earthstar/blob/master/src/readme-example.ts
 
 This part doesn't work. Keypair1 sets work fine, but this returns `undefined`. 

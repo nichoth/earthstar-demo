@@ -8,6 +8,13 @@ var assert = require('assert')
 
 let storage = new StorageMemory([ValidatorEs4], '+gardening.xxxxxxxx');
 
+
+// Get notified when anything changes.
+let unsub = storage.onWrite.subscribe((ev) => {
+    console.log('something changed', ev)
+})
+
+
 // Users are called "authors".
 // Let's make up some authors for testing.
 // A keypair is { address: '@aaaa.xxx', secret: 'xxx' }.
@@ -108,18 +115,22 @@ storage.getDocument('/wiki/Strawberry');
 storage.set(keypair1, {
     format: 'es.4',
     path: '/about/~' + keypair1.address + '/profile.json',
-    content: JSON.stringify({longname: 'Suzie'}),
-});
+    content: JSON.stringify({longname: 'Suzie'})
+})
+
 
 // You can do leveldb style queries.
 storage.paths()
 storage.paths({ lowPath: '/abc', limit: 100 })
 storage.paths({ pathPrefix: '/wiki/' })
 
-// Get notified when anything changes.
-let unsub = storage.onWrite.subscribe((ev) => {
-    console.log('something changed', ev)
-})
+
+// You can sync to another Storage that has the same workspace address
+let storage2 = new StorageMemory([ValidatorEs4], '+gardening.xxxxxxxx');
+storage.sync(storage2);
+// Now storage and storage2 are identical.
+
+
 
 
 
